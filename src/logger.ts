@@ -2,10 +2,9 @@ import { Context } from "koa";
 
 export function logger() {
     return async (ctx: Context, next: () => Promise<void>) => {
-        console.log(ctx);
-        const start = Date.now();
+        const start = new Date().getTime();
         await next();
-        const ms = Date.now() - start;
+        const ms = new Date().getTime() - start;
         console.log(`${ctx.method} ${ctx.url} ${ctx.status} - ${ms}ms`);
     }
 }

@@ -3,17 +3,20 @@ import Router from '@koa/router';
 import AuthController from './controller/auth';
 import UserController from './controller/user';
 
-const router = new Router();
+const unprotectedRouter = new Router();
 
-router.post('/auth/login', AuthController.login);
-router.post('/auth/register', AuthController.register);
+unprotectedRouter.post('/auth/login', AuthController.login);
+unprotectedRouter.post('/auth/register', AuthController.register);
 
+const protectedRouter = new Router();
 
 // user相关路由
-router.get('/user', UserController.listUsers);
-router.get('/user/:id', UserController.showUserDetail);
-router.put('/user/:id', UserController.updateUser);
-router.delete('/user/:id', UserController.deleteUser);
+protectedRouter.get('/user', UserController.listUsers);
+protectedRouter.get('/user/:id', UserController.showUserDetail);
+protectedRouter.put('/user/:id', UserController.updateUser);
+protectedRouter.delete('/user/:id', UserController.deleteUser);
 
-
-export default router;
+export {
+    protectedRouter,
+    unprotectedRouter
+};

@@ -32,3 +32,12 @@ export class ForbiddenException extends BaseException {
         this.message = msg || '权限不足';
     }
 }
+
+export class ForbiddenRepeat extends BaseException {
+    status = 400;
+
+    constructor(msg?: string) {
+        super();
+        this.message = msg || '该用户已存在';
+    }
+}

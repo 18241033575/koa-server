@@ -2,10 +2,11 @@ import { Context } from "koa";
 import * as argon2 from "argon2";
 import { getManager } from "typeorm";
 import jwt from 'jsonwebtoken';
+const lodash = require("lodash");
 
 import { User } from '../entity/user';
 import { JWT_SECRET } from "../constants";
-import { UnauthorizedException } from "../exceptions";
+import {ForbiddenRepeat, UnauthorizedException} from "../exceptions";
 
 export default class AuthController {
     public static async login(ctx: Context) {
@@ -31,8 +32,11 @@ export default class AuthController {
 
     public static async register(ctx: Context) {
         const userRepository = getManager().getRepository(User);
+        const userCheck = await userRepository.findOne();
+        if (!lodash.isEmpty(userCheck)) {
+            throw new ForbiddenRepeat();
+        }
         const newUser = new User();
-        console.log(ctx.request);
         // @ts-ignore
         newUser.name = ctx.request.body.name;
         // @ts-ignore
